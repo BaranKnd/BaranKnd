@@ -40,7 +40,13 @@ client.on("message", async (msg) => {
 })
 
 client.on("guildCreate", (guild) => {
-  let destek = guild.roles.find(r => r)
+  let destek = guild.roles.find(r => r.name == "Destek Ekibi");
+  if(!destek && guild.me.hasPermission("MANAGE_ROLES")) {
+    guild.createRole({
+      name: "Destek Ekibi",
+      permissions: [],
+    })
+  }
   client.user.setActivity(`CodAre Talep Sistemi | ${client.guilds.size} sunucuya hizmet veriyorum! | ${prefix}yardım`);
 });
 
@@ -54,7 +60,7 @@ client.on("message", (message) => {
     .setColor(0xCF40FA)
     .setDescription(`Selam, ben ilk olarak CodAre tarafından paylaşıldım!.`)
     .addField(`Talep açma`, `**[${prefix}talepaç]()** : Bir destek talebi oluşturursunuz!\n**[${prefix}talepkapat]()** : Açık olan destek talebinizi kapatır!`)
-    .addField(`Diğer`, `**[${prefix}yardım]()** : Yardım menüsünü görürsünüz.\n**[${prefix}ping]()** : Botun ve Discord API'sinin gecikme süresini gösterir.`)
+    .addField(`Diğer`, `**[${prefix}yardım]()** : Yardım menüsünü görürsünüz.\n**[${prefix}ping]()** : Botun ve Discord API'sinin gecikme süresini gösterir.\n**[${prefix}bilgi]()** : Bot hakkında bilgi verir.`)
     .setFooter("ID: " + message.author.id + " | " + message.author.tag , message.author.displayAvatarURL);
     message.channel.send({ embed: embed });
   }
@@ -97,9 +103,9 @@ if (message.content.toLowerCase().startsWith(prefix + `talepaç`)) {
 if (message.content.toLowerCase().startsWith(prefix + `talepkapat`)) {
     if (!message.channel.name.startsWith(`talep-`)) return;
 
-    message.channel.send(`Destek kanalını kapatacaksın, emin misin? kapatmak için **-kapat** yazman yeterli. Unutma, cevabını **15** saniye içinde vermelisin. CodAre tarafından düzenlenip paylaşıldı!`)
+    message.channel.send(`Destek kanalını kapatacaksın, emin misin? kapatmak için **!kapat** yazman yeterli. Unutma, cevabını **15** saniye içinde vermelisin. CodAre tarafından düzenlenip paylaşıldı!`)
     .then((m) => {
-      message.channel.awaitMessages(response => response.content === '-kapat. CodAre tarafından düzenlenip paylaşıldı!', {
+      message.channel.awaitMessages(response => response.content === '-kapat', {
         max: 1,
         time: 15000,
         errors: ['time'],

@@ -1,8 +1,5 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-/*
-http://github.com/arpelo
-*/
 
 const config = require('./config')
 
@@ -13,23 +10,32 @@ function clean(text) {
         return text;
 }
 
-var prefix = "!";
-var token = "NjgwNjYzNjI2NTExNTQ4NDU5.XlDQQw.G0KaU_BpSEmFzqpHwWK-DhOPSnA";
+var prefix = config.prefix;
+var token = config.token;
 var chalk = require('chalk');
 client.on("ready", () => {
-  console.log(chalk.blue("[!]") + " " + chalk.green("Bot " + client.user.tag + " olarak giriş yaptı, " + client.guilds.size + " kadar sunucuya hizmet veriyorum!"))
+  console.log(chalk.blue("[ " + new Date().toLocaleString() + " ]") + " " + chalk.green("Bot " + client.user.tag + " olarak giriş yaptı, " + client.guilds.size + " kadar sunucuya hizmet veriyorum!"))
   client.user.setActivity(`CodAre Talep Sistemi | ${client.guilds.size} sunucuya hizmet veriyorum! | ${prefix}yardım`);
 });
 
 client.on("message", async (msg) => {
+  function sahip(owners){
+    let string = [];
+    for(let x in owners) {
+      string.push(client.users.get(owners[x]).tag)
+    }
+    return string;
+  }
   if(msg.author.bot) return;
-  if(msg.content.toLowerCase() == "!bilgi" || "!davet") {
+  if(msg.content.toLowerCase() == "!bilgi" || msg.content.toLowerCase() == "!davet") {
     let bilgi = new Discord.RichEmbed()
     .setTitle(client.user.username + " hakkında bilgi")
-    .setDescription("Botu sunucunuza eklediğiniz anda eğer **Destek Ekibi** isminde bir rol yoksa o rolü oluştururum.\nBotun davet linki: [Tıklayın!](https://discordapp.com/oauth2/authorize?client_id=" + client.user.id + "&scope=bot&permissions=0)")
+    .setDescription("Botu sunucunuza eklediğiniz anda eğer **Destek Ekibi** isminde bir rol yoksa o rolü oluştururum.\nBotun davet linki: [Tıklayın!](https://discordapp.com/oauth2/authorize?client_id=" + client.user.id + "&scope=bot&permissions=0)\nBotun sahibi: **" + sahip(config.sahip) + "**")
     .setFooter("ID: " + msg.author.id + " | " + msg.author.tag , msg.author.displayAvatarURL)
     .setColor("#AD4BFF");
     return msg.channel.send({ embed: bilgi })
+  } else {
+    
   }
 })
 

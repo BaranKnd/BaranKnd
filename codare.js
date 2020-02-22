@@ -22,15 +22,19 @@ client.on("ready", () => {
 });
 
 client.on("message", async (msg) => {
+  if(msg.author.bot) return;
   if(msg.content.toLowerCase() == "!bilgi" || "!davet") {
     let bilgi = new Discord.RichEmbed()
     .setTitle(client.user.username + " hakkında bilgi")
-    .setDescription("Botu sunucunuza eklediğiniz anda eğer")
+    .setDescription("Botu sunucunuza eklediğiniz anda eğer **Destek Ekibi** isminde bir rol yoksa o rolü oluştururum.\nBotun davet linki: [Tıklayın!](https://discordapp.com/oauth2/authorize?client_id=" + client.user.id + "&scope=bot&permissions=0)")
+    .setFooter("ID: " + msg.author.id + " | " + msg.author.tag , msg.author.displayAvatarURL)
+    .setColor("#AD4BFF");
+    return msg.channel.send({ embed: bilgi })
   }
 })
 
 client.on("guildCreate", (guild) => {
-  
+  let destek = guild.roles.find(r => r)
   client.user.setActivity(`CodAre Talep Sistemi | ${client.guilds.size} sunucuya hizmet veriyorum! | ${prefix}yardım`);
 });
 

@@ -28,9 +28,10 @@ client.on("message", async (msg) => {
   }
   if(msg.author.bot) return;
   if(msg.content.toLowerCase() == "!bilgi" || msg.content.toLowerCase() == "!davet") {
+    let inf = sahip(config.sahip)
     let bilgi = new Discord.RichEmbed()
     .setTitle(client.user.username + " hakkında bilgi")
-    .setDescription("Botu sunucunuza eklediğiniz anda eğer **Destek Ekibi** isminde bir rol yoksa o rolü oluştururum.\nBotun davet linki: [Tıklayın!](https://discordapp.com/oauth2/authorize?client_id=" + client.user.id + "&scope=bot&permissions=0)\nBotun sahibi: **" + sahip(config.sahip) + "**")
+    .setDescription("Botu sunucunuza eklediğiniz anda eğer **Destek Ekibi** isminde bir rol yoksa o rolü oluştururum.\nBotun davet linki: [Tıklayın!](https://discordapp.com/oauth2/authorize?client_id=" + client.user.id + "&scope=bot&permissions=0)\nBotun sahibi: **" + inf.toString().split(",").join(" `|  ` ") + "**")
     .setFooter("ID: " + msg.author.id + " | " + msg.author.tag , msg.author.displayAvatarURL)
     .setColor("#AD4BFF");
     return msg.channel.send({ embed: bilgi })
